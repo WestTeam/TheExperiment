@@ -1,9 +1,16 @@
 
 // Copyright (c) 2019 All Rights Reserved WestBot
 
+#include <FastLED.h>
 #include <SoftwareSerial.h>
 
 // USER DEFINE
+#define LED_PIN     5
+#define NUM_LEDS    14
+#define BRIGHTNESS  255
+#define LED_TYPE    WS2811
+#define COLOR_ORDER GRB
+
 #define enA 9
 #define in1 6
 #define in2 7
@@ -12,6 +19,10 @@
 #define PwmOutput 255 // FULL SPEED NOW
 
 #define RUNNING_FOR 30000L // 30 secondes
+#define UPDATES_PER_SECOND 100
+
+CRGB leds[NUM_LEDS];
+const CRGB lightcolor( 255, 128, 128 );
 
 SoftwareSerial BTserial( 2, 3 );
  
@@ -19,6 +30,18 @@ char c = ' ';
  
 void setup() 
 {
+    // Init LEDs
+    FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
+    FastLED.setBrightness(  BRIGHTNESS );
+
+    // Static red for QR
+    leds[0] = lightcolor; 
+    leds[1] = lightcolor; 
+    leds[2] = lightcolor; 
+    leds[3] = lightcolor; 
+    leds[4] = lightcolor; 
+    FastLED.show();
+
     // Configure pin for PWM and motor control
     pinMode( enA, OUTPUT );
     pinMode( in1, OUTPUT );
@@ -61,12 +84,20 @@ void loop()
             // Set PWM until reaching top
             for( uint32_t tStart = millis();  ( millis() - tStart ) < RUNNING_FOR; )
             {
-              digitalWrite( LedPin, HIGH );
-              digitalWrite( LED_BUILTIN, HIGH );   // turn the LED on (HIGH is the voltage level)
-              delay( 1000 );
-              digitalWrite( LedPin, LOW );
-              digitalWrite( LED_BUILTIN, LOW );   // turn the LED on (HIGH is the voltage level)
-              delay( 1000 );               
+              leds[0] = CRGB::Red; 
+              leds[1] = CRGB::Red;
+              leds[2] = CRGB::Red;
+              leds[3] = CRGB::Red;
+              leds[4] = CRGB::Red;
+              FastLED.show();
+              delay( 500 );
+              leds[0] = CRGB::Black; 
+              leds[1] = CRGB::Black;
+              leds[2] = CRGB::Black;
+              leds[3] = CRGB::Black;
+              leds[4] = CRGB::Black;
+              FastLED.show();
+              delay( 500 );              
             }
 
             analogWrite( enA, 0 ); // STOP PWM

@@ -6,7 +6,7 @@
 
 // USER DEFINE
 #define LED_PIN     5
-#define NUM_LEDS    14
+#define NUM_LEDS    6
 #define BRIGHTNESS  255
 #define LED_TYPE    WS2811
 #define COLOR_ORDER GRB
@@ -22,7 +22,6 @@
 #define UPDATES_PER_SECOND 100
 
 CRGB leds[NUM_LEDS];
-const CRGB lightcolor( 255, 128, 128 );
 
 SoftwareSerial BTserial( 2, 3 );
  
@@ -35,11 +34,13 @@ void setup()
     FastLED.setBrightness(  BRIGHTNESS );
 
     // Static red for QR
-    leds[0] = lightcolor; 
-    leds[1] = lightcolor; 
-    leds[2] = lightcolor; 
-    leds[3] = lightcolor; 
-    leds[4] = lightcolor; 
+    leds[0] = CRGB::Yellow; 
+    leds[1] = CRGB::Yellow;
+    leds[2] = CRGB::Yellow;
+    leds[3] = CRGB::Yellow;
+    leds[4] = CRGB::Yellow;
+    leds[5] = CRGB::Yellow; 
+
     FastLED.show();
 
     // Configure pin for PWM and motor control
@@ -89,6 +90,7 @@ void loop()
               leds[2] = CRGB::Red;
               leds[3] = CRGB::Red;
               leds[4] = CRGB::Red;
+              leds[5] = CRGB::Red; 
               FastLED.show();
               delay( 500 );
               leds[0] = CRGB::Black; 
@@ -96,12 +98,35 @@ void loop()
               leds[2] = CRGB::Black;
               leds[3] = CRGB::Black;
               leds[4] = CRGB::Black;
+              leds[5] = CRGB::Black; 
               FastLED.show();
               delay( 500 );              
             }
 
             analogWrite( enA, 0 ); // STOP PWM
             // END EXPERIENCE
+        }
+        
+        if( c == '0' )
+        {
+            leds[0] = CRGB::Purple; 
+            leds[1] = CRGB::Purple;
+            leds[2] = CRGB::Purple;
+            leds[3] = CRGB::Purple;
+            leds[4] = CRGB::Purple;
+            leds[5] = CRGB::Purple; 
+            FastLED.show();
+        }
+        
+        if( c == '1' )
+        {
+            leds[0] = CRGB::Yellow; 
+            leds[1] = CRGB::Yellow;
+            leds[2] = CRGB::Yellow;
+            leds[3] = CRGB::Yellow;
+            leds[4] = CRGB::Yellow;
+            leds[5] = CRGB::Yellow; 
+            FastLED.show();
         }
     }
 

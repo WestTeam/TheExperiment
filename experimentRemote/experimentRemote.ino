@@ -58,6 +58,24 @@ void setup()
  
 void loop()
 {
+  /*
+    myStepper.step( -100 );  
+    for( int i = 0; i < NUM_LEDS; ++i )
+    {
+      leds[ i ] = CRGB::Red;
+    }
+    FastLED.show(); 
+    delay( 50 );
+
+    myStepper.step( -100 ); 
+    for( int i = 0; i < NUM_LEDS; ++i )
+    {
+      leds[ i ] = CRGB::Black;
+    }
+    FastLED.show();   
+    delay( 50 );
+    */
+
     if( BTserial.available() )
     {  
         c = BTserial.read();
@@ -68,33 +86,42 @@ void loop()
         {
             Serial.println( "Starting experience" );
 
-
             // Set PWM until reaching top
             for( uint32_t tStart = millis();  ( millis() - tStart ) < RUNNING_FOR; )
             {
-              myStepper.step( 300 );  
+                myStepper.step( -100 );  
+                for( int i = 0; i < NUM_LEDS; ++i )
+                {
+                  leds[ i ] = color;
+                }
+                FastLED.show(); 
+                delay( 50 );
+                
+                myStepper.step( -100 ); 
+                for( int i = 0; i < NUM_LEDS; ++i )
+                {
+                  leds[ i ] = CRGB::Black;
+                }
+                FastLED.show();   
+                delay( 50 );
+            }
+
+            while( 1 ) 
+            {
               for( int i = 0; i < NUM_LEDS; ++i )
               {
-                leds[ i ] = CRGB::Red;
+                leds[ i ] = color;
               }
-              FastLED.show();   
-              delay( 100 );      
+              FastLED.show(); 
+              delay( 150 );
               
               for( int i = 0; i < NUM_LEDS; ++i )
               {
                 leds[ i ] = CRGB::Black;
               }
-              FastLED.show();   
-              delay( 100 ); 
+              FastLED.show(); 
+              delay( 150 );
             }
-            
-            // END EXPERIENCE
-
-            for( int i = 0; i < NUM_LEDS; ++i )
-            {
-                leds[ i ] = color;
-            }
-            FastLED.show();
         }
         else if( c == '0' )
         {
@@ -122,7 +149,7 @@ void loop()
     {
         c =  Serial.read();
  
-        if( c=='#' )  
+        if( c == '#' )  
         {
             Serial.print( "Entering configuration mode (type '&' to exit)" );
         }
